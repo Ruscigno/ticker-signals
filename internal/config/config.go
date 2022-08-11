@@ -2,7 +2,10 @@ package config
 
 import (
 	"errors"
+	"fmt"
+	"net/url"
 	"os"
+	"strings"
 	"sync"
 
 	"github.com/jinzhu/gorm"
@@ -13,6 +16,8 @@ import (
 var ErrConfigurationLoad = errors.New("unable to load configuration")
 
 const (
+	ApiUri                   = "api.uri"
+	SiteUrl                  = "site.url"
 	DatabaseDriver           = "database.driver"
 	DatabaseDsn              = "database.dsn"
 	DatabaseServer           = "database.server"
@@ -29,6 +34,8 @@ const (
 var (
 	// defaults for the configuration
 	defaults map[string]string = map[string]string{
+		ApiUri:                   os.Getenv(ApiUri),
+		SiteUrl:                  os.Getenv(SiteUrl),
 		DatabaseDriver:           os.Getenv(DatabaseDriver),
 		DatabaseDsn:              os.Getenv(DatabaseDsn),
 		DatabaseServer:           os.Getenv(DatabaseServer),
@@ -42,6 +49,8 @@ var (
 )
 
 type Settings struct {
+	ApiUri                   string `yaml:"ApiUri" json:"-" flag:"api-uri"`
+	SiteUrl                  string `yaml:"SiteUrl" json:"-" flag:"site-url"`
 	DatabaseDriver           string `yaml:"DatabaseDriver" json:"-" flag:"database-driver"`
 	DatabaseDsn              string `yaml:"DatabaseDsn" json:"-" flag:"database-dsn"`
 	DatabaseServer           string `yaml:"DatabaseServer" json:"-" flag:"database-server"`
@@ -67,6 +76,8 @@ func GetAppConfig(fileName string) (*AppConfig, error) {
 	setupViper(fileName)
 	cfg := &AppConfig{
 		settings: &Settings{
+			ApiUri:                   viper.GetString(ApiUri),
+			SiteUrl:                  viper.GetString(SiteUrl),
 			DatabaseDriver:           viper.GetString(DatabaseDriver),
 			DatabaseDsn:              viper.GetString(DatabaseDsn),
 			DatabaseServer:           viper.GetString(DatabaseServer),
@@ -81,6 +92,35 @@ func GetAppConfig(fileName string) (*AppConfig, error) {
 		},
 	}
 	return cfg, nil
+}
+
+// SiteUrl returns the public server URL (default is "http://localhost:2342/").
+func (c *AppConfig) SiteUrl() string {
+	if c.settings.SiteUrl == "" {
+		return fmt.Sprintf("http://localhost:%d/", c.HttpPort())
+	}
+
+	return strings.TrimRight(c.settings.SiteUrl, "/") + "/"
+}
+
+// BaseUri returns the site base URI for a given resource.
+func (c *AppConfig) BaseUri(res string) string {
+	if c.SiteUrl() == "" {
+		return res
+	}
+
+	u, err := url.Parse(c.SiteUrl())
+
+	if err != nil {
+		return res
+	}
+
+	return strings.TrimRight(u.EscapedPath(), "/") + res
+}
+
+// ApiUri returns the api URI.
+func (c *AppConfig) ApiUri() string {
+	return c.BaseUri(ApiUri)
 }
 
 func (c *AppConfig) HttpHost() string {

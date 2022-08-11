@@ -46,7 +46,5 @@ func main() {
 	// carService := service.NewCarService(&ctx, carRepo)
 	// handler := handlers.NewCarHandler(carService)
 	// handler.Start(cfg.ServerPort)
-
-	zap.L().Info("Ticker Signals Server", zap.String("started", "in "+time.Since(start).String()))
-	defer zap.L().Info("See ya later, alligator!")
+	zap.L().Info("See ya later, alligator!")
 }

@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/blendle/zapdriver v1.3.1
+	github.com/gin-contrib/zap v0.0.2
 	github.com/gin-gonic/gin v1.8.1
 	github.com/jinzhu/gorm v1.9.16
 	github.com/natefinch/lumberjack v2.0.0+incompatible

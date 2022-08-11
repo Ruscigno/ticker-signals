@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/Ruscigno/ticker-signals/internal/config"
+	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -15,9 +16,10 @@ import (
 func StartHttpServer(ctx context.Context, cfg *config.AppConfig, start time.Time) {
 	router := gin.New()
 	// Register logger middleware.
-	router.Use(Logger(), Recovery())
+	router.Use(ginzap.Ginzap(zap.L(), "", true), ginzap.RecoveryWithZap(zap.L(), true))
+	// router.Use(Logger(), Recovery())
 	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
+		c.JSON(http.StatusOK, gin.H{
 			"message": "pong",
 		})
 	})

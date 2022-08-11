@@ -3,44 +3,7 @@ package server
 import (
 	"fmt"
 	"strings"
-	"time"
-
-	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 )
-
-// Logger instances a Logger middleware for Gin.
-func Logger() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		// Start timer
-		start := time.Now()
-		path := c.Request.URL.Path
-		raw := c.Request.URL.RawQuery
-
-		// Process request
-		c.Next()
-
-		// Stop timer
-		end := time.Now()
-		latency := end.Sub(start)
-
-		// clientIP := c.ClientIP()
-		method := c.Request.Method
-		statusCode := c.Writer.Status()
-
-		if raw != "" {
-			path = path + "?" + raw
-		}
-
-		// Use debug level to keep production logs clean.
-		zap.L().Debug(fmt.Sprintf("server: %s %s (%3d) [%v]",
-			method,
-			Log(path),
-			statusCode,
-			latency,
-		))
-	}
-}
 
 // Log sanitizes strings created from user input in response to the log4j debacle.
 func Log(s string) string {
