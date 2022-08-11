@@ -1,0 +1,33 @@
+pipeline {
+  agent any 
+
+  environment {
+      dockerImage = ''
+      registry = 'r.r6o.co/ticker-signals'
+  }
+  stages {
+      stage('Checkout') {
+          steps {
+              checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '7b8bd502-d244-4026-af67-956b56438508', url: 'https://github.com/Ruscigno/ticker-signals']]])
+          }
+      }
+      
+      stage('Build docker image') {
+          steps {
+              script {
+                  dockerImage = docker.build registry
+              }
+          }
+      }
+      
+      stage('Push docker image') {
+          steps {
+              script {
+                    def customImage = docker.build("r.r6o.co/ticker-signals:${env.BUILD_ID}")
+                    customImage.push()
+                    customImage.push('latest')
+              }
+          }
+      }
+  }
+}

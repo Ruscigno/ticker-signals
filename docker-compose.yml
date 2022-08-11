@@ -1,0 +1,19 @@
+---
+version: '3'
+
+services:
+  ticker-signals:
+    image: r.r6o.co/ticker-signals:latest
+    container_name: ticker-signals
+    ports:
+      - 31010:31010
+    restart: unless-stopped
+    # environment:
+    #   TICKER_DATABASE_URL:
+    #   TICKER_CONFIG_LEVEL:
+    networks: 
+      - ticker-beats-ntw
+
+networks:
+  ticker-beats-ntw:
+    driver: bridge
