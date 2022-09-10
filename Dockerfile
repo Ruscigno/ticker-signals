@@ -1,4 +1,4 @@
-FROM golang:1.19 as build
+FROM golang:1.19-alpine as build
 
 WORKDIR /app
 COPY server server
@@ -15,5 +15,5 @@ FROM alpine:latest
 WORKDIR /app
 COPY --from=build /app/main /app/ticker-signals
 
-EXPOSE 31010
+EXPOSE 31008
 ENTRYPOINT ["/app/ticker-signals"]

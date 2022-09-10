@@ -1,0 +1,1 @@
+ALTER TABLE tickerbeats.traderequests ADD entry varchar(50) NULL;

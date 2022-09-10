@@ -1,0 +1,13 @@
+DROP SEQUENCE if EXISTS tickerbeats.accountsinfo_seq;
+DROP SEQUENCE if EXISTS tickerbeats.tickerbeats_seq;
+DROP TABLE IF EXISTS tickerbeats.signalsresult;
+DROP TABLE IF EXISTS tickerbeats.signals;
+DROP TABLE IF EXISTS tickerbeats.tradetransactions;
+DROP TABLE IF EXISTS tickerbeats.traderequests;
+DROP TABLE IF EXISTS tickerbeats.traderesults;
+DROP TABLE IF EXISTS tickerbeats.positions;
+DROP TABLE IF EXISTS tickerbeats.orders;
+DROP TABLE IF EXISTS tickerbeats.deals;
+DROP TABLE IF EXISTS tickerbeats.traderules;
+DROP TABLE IF EXISTS tickerbeats.accountsinfo;
+DROP TABLE IF EXISTS tickerbeats.accounts cascade;
