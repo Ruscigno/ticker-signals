@@ -15,20 +15,8 @@ import (
 	accRepository "github.com/Ruscigno/ticker-signals/internal/transaction/accounts/repo"
 	accService "github.com/Ruscigno/ticker-signals/internal/transaction/accounts/service"
 
-	ordRepository "github.com/Ruscigno/ticker-signals/internal/transaction/orders/repo"
-	ordService "github.com/Ruscigno/ticker-signals/internal/transaction/orders/service"
-
-	deaRepository "github.com/Ruscigno/ticker-signals/internal/transaction/deals/repo"
-	deaService "github.com/Ruscigno/ticker-signals/internal/transaction/deals/service"
-
-	posRepository "github.com/Ruscigno/ticker-signals/internal/transaction/positions/repo"
-	posService "github.com/Ruscigno/ticker-signals/internal/transaction/positions/service"
-
 	ttRepository "github.com/Ruscigno/ticker-signals/internal/transaction/tradetransaction/repo"
 	ttService "github.com/Ruscigno/ticker-signals/internal/transaction/tradetransaction/service"
-
-	infoR "github.com/Ruscigno/ticker-signals/internal/transaction/accountsinfo/repo"
-	infoS "github.com/Ruscigno/ticker-signals/internal/transaction/accountsinfo/service"
 
 	trRepository "github.com/Ruscigno/ticker-signals/internal/transaction/traderules/repo"
 	trService "github.com/Ruscigno/ticker-signals/internal/transaction/traderules/service"
@@ -140,50 +128,34 @@ func InitDatabase(dbURL string) (*sqlx.DB, error) {
 }
 
 type Controllers struct {
-	DB      *sqlx.DB
-	TrSvc   *trService.TradeRulesService
-	InfoSvc *infoS.AccountsInfoService
-	AccSvc  *accService.AccountsService
-	SigSvc  *sigS.SignalService
-	Beats   *bb.TickerBeatsService
-	PosSvc  *posService.PositionsService
-	DeaSvc  *deaService.DealsService
-	OrdSvc  *ordService.OrdersService
-	TtSvc   *ttService.TradeTransactionService
+	DB     *sqlx.DB
+	TrSvc  *trService.TradeRulesService
+	AccSvc *accService.AccountsService
+	SigSvc *sigS.SignalService
+	Beats  *bb.TickerBeatsService
+	TtSvc  *ttService.TradeTransactionService
 }
 
 func InitControllers(ctx context.Context, db *sqlx.DB) *Controllers {
 	// Repos
 	trRepo := trRepository.NewTradeRulesRepo(ctx, db)
-	infoRepo := infoR.NewAccountInfoRepo(ctx, db)
 	accRepo := accRepository.NewAccountsRepo(ctx, db)
 	sigRepo := sigR.NewSignalRepository(ctx, db)
-	posRepo := posRepository.NewPositionsRepo(ctx, db)
-	deaRepo := deaRepository.NewDealsRepo(ctx, db)
-	ordRepo := ordRepository.NewOrdersRepo(ctx, db)
 	ttRepo := ttRepository.NewTradeTransactionRepo(ctx, db)
 
 	//Controllers
 	trSvc := trService.NewTradeRulesService(ctx, trRepo)
-	infoSvc := infoS.NewAccountsInfoService(ctx, infoRepo)
-	accSvc := accService.NewAccountsService(ctx, accRepo, infoRepo, infoSvc)
+	accSvc := accService.NewAccountsService(ctx, accRepo)
 	sigSvc := sigS.NewSignalService(ctx, sigRepo)
 	beats := bb.NewTickerBeatsService(ctx, sigSvc, trSvc)
-	posSvc := posService.NewPositionsService(ctx, posRepo, beats)
-	deaSvc := deaService.NewDealsService(ctx, deaRepo, posSvc, beats)
-	ordSvc := ordService.NewOrdersService(ctx, ordRepo, beats, deaSvc)
 	ttSvc := ttService.NewTradeTransactionService(ctx, ttRepo, beats)
 
 	return &Controllers{
-		DB:      db,
-		TrSvc:   &trSvc,
-		InfoSvc: &infoSvc,
-		AccSvc:  &accSvc,
-		SigSvc:  &sigSvc,
-		Beats:   &beats,
-		PosSvc:  &posSvc,
-		DeaSvc:  &deaSvc,
-		OrdSvc:  &ordSvc,
-		TtSvc:   &ttSvc,
+		DB:     db,
+		TrSvc:  &trSvc,
+		AccSvc: &accSvc,
+		SigSvc: &sigSvc,
+		Beats:  &beats,
+		TtSvc:  &ttSvc,
 	}
 }

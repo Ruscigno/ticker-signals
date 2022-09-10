@@ -10,22 +10,6 @@ import (
 // TODO: try to use proto.Marshal and Unmarshal
 func BeatsToProto(beats *tb.TickerBeats) *v1.TradeBeats {
 	signal := SignalToProto(beats.Signal)
-	var pp []*v1.Position
-	cpp := len(beats.Positions)
-	if cpp > 0 {
-		pp = make([]*v1.Position, cpp)
-		for i, beat := range beats.Positions {
-			pp[i] = PositionToProto(beat)
-		}
-	}
-	var oo []*v1.Order
-	coo := len(beats.Orders)
-	if coo > 0 {
-		oo = make([]*v1.Order, coo)
-		for i, beat := range beats.Orders {
-			oo[i] = OrderToProto(beat)
-		}
-	}
 	var tr []*v1.TradeRequest
 	ctr := len(beats.TradeRequests)
 	if ctr > 0 {
@@ -37,8 +21,6 @@ func BeatsToProto(beats *tb.TickerBeats) *v1.TradeBeats {
 	return &v1.TradeBeats{
 		Signal:         signal,
 		ExpirationTime: beats.ExpirationTime,
-		Positions:      pp,
-		Orders:         oo,
 		TradeRequest:   tr,
 	}
 }

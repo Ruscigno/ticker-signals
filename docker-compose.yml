@@ -6,11 +6,11 @@ services:
     image: r.r6o.co/ticker-signals:latest
     container_name: ticker-signals
     ports:
-      - 31010:31010
+      - 31008:31008
     restart: unless-stopped
-    # environment:
-    #   TICKER_DATABASE_URL:
-    #   TICKER_CONFIG_LEVEL:
+    environment:
+      TICKER_DATABASE_URL: host=super-server;user=ruscigno;dbname=tickerheart;password=ZGxuR2STkr2N6JfT;sslmode=disable
+      TICKER_CONFIG_LEVEL: PROD
     networks: 
       - ticker-beats-ntw
 

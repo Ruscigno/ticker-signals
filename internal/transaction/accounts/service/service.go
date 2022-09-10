@@ -6,29 +6,23 @@ import (
 
 	model "github.com/Ruscigno/ticker-signals/internal/transaction/accounts"
 	repo "github.com/Ruscigno/ticker-signals/internal/transaction/accounts/repo"
-	infoR "github.com/Ruscigno/ticker-signals/internal/transaction/accountsinfo/repo"
-	infoS "github.com/Ruscigno/ticker-signals/internal/transaction/accountsinfo/service"
 	"github.com/blendle/zapdriver"
 	"github.com/davecgh/go-spew/spew"
 	"go.uber.org/zap"
 )
 
 // NewAccountsService creates a service to interact with PostgreSQL
-func NewAccountsService(ctx context.Context, repo repo.AccountRepository, repoI infoR.AccountInfoRepository, svcI infoS.AccountsInfoService) AccountsService {
+func NewAccountsService(ctx context.Context, repo repo.AccountRepository) AccountsService {
 	return &accountsService{
-		ctx:   ctx,
-		repo:  repo,
-		svcI:  svcI,
-		repoI: repoI,
+		ctx:  ctx,
+		repo: repo,
 	}
 }
 
 // AccountsService ...
 type accountsService struct {
-	ctx   context.Context
-	repo  repo.AccountRepository
-	svcI  infoS.AccountsInfoService
-	repoI infoR.AccountInfoRepository
+	ctx  context.Context
+	repo repo.AccountRepository
 }
 
 // Insert inserts a new account

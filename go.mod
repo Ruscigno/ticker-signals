@@ -3,12 +3,10 @@ module github.com/Ruscigno/ticker-signals
 go 1.17
 
 require (
-	github.com/Masterminds/squirrel v1.5.0
 	github.com/Ruscigno/ruscigno-gosdk v0.24.3
 	github.com/blendle/zapdriver v1.3.1
 	github.com/davecgh/go-spew v1.1.1
 	github.com/golang/mock v1.6.0
-	github.com/golang/protobuf v1.5.2
 	github.com/google/uuid v1.1.2
 	github.com/jackc/pgx/v4 v4.10.1
 	github.com/jmoiron/sqlx v1.3.1
@@ -19,11 +17,11 @@ require (
 	go.uber.org/zap v1.17.0
 	google.golang.org/grpc v1.43.0
 	google.golang.org/grpc/examples v0.0.0-20210304020650-930c79186c99
-	google.golang.org/protobuf v1.27.1
 )
 
 require (
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.8.0 // indirect
@@ -34,8 +32,6 @@ require (
 	github.com/jackc/pgtype v1.6.2 // indirect
 	github.com/jackc/puddle v1.1.3 // indirect
 	github.com/kr/pretty v0.2.0 // indirect
-	github.com/lann/builder v0.0.0-20180802200727-47ae307949d0 // indirect
-	github.com/lann/ps v0.0.0-20150810152359-62de8c46ede0 // indirect
 	github.com/magiconair/properties v1.8.5 // indirect
 	github.com/mitchellh/mapstructure v1.4.3 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
@@ -55,6 +51,7 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	google.golang.org/genproto v0.0.0-20211208223120-3a66f561d7aa // indirect
+	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 	gopkg.in/ini.v1 v1.66.2 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect

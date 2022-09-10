@@ -68,12 +68,12 @@ func setupViper() {
 }
 
 func main() {
-	logger := app.SetupLogger("ticker-signals.log")
+	logger := app.SetupLogger("ticker-heart.log")
 	defer logger.Sync()
 	undo := zap.ReplaceGlobals(logger)
 	defer undo()
 
-	zap.L().Info("Starting ticker-signals...")
+	zap.L().Info("Starting ticker-heart...")
 	defer zap.L().Info("See ya later, alligator!")
 
 	loc, err := time.LoadLocation("")
@@ -119,9 +119,6 @@ func main() {
 	pb.RegisterEchoServer(s, &echoServer{})
 
 	// Servers
-	apiServer := api.NewTransactionsServiceServer(*svc.AccSvc, *svc.InfoSvc, *svc.DeaSvc, *svc.OrdSvc, *svc.PosSvc, *svc.TtSvc, *svc.Beats, *svc.TrSvc)
-	v1.RegisterTransactionsServiceServer(s, apiServer)
-
 	ticServer := api.NewTickerBeatsServiceServer(*svc.Beats, *svc.TrSvc)
 	v1.RegisterTickerBeatsServiceServer(s, ticServer)
 
