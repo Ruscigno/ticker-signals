@@ -84,7 +84,7 @@ func main() {
 
 	setupViper()
 	cfg := &config{
-		serverPort:  "31008",
+		serverPort:  "31006",
 		dbURL:       strings.ReplaceAll(viper.GetString("dbURL"), ";", " "),
 		configLevel: viper.GetString("configLevel"),
 	}

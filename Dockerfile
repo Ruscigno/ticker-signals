@@ -15,5 +15,5 @@ FROM alpine:latest
 WORKDIR /app
 COPY --from=build /app/main /app/ticker-signals
 
-EXPOSE 31008
+EXPOSE 31006
 ENTRYPOINT ["/app/ticker-signals"]
