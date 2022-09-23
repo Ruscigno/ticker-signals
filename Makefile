@@ -1,56 +1,28 @@
-SHELL = /bin/bash
-.SHELLFLAGS = -o pipefail -e -c
-
-GOPRIVATE := github.com/kohofinancial
-SERVICE_NAME := trading
-
-tab := $(shell printf '\t')
-
-WORKSPACE_PATH = $(PWD)
-
-.PHONY: dep
-dep: ## Install code / documentation dependencies
-	go mod tidy
-
-.PHONY: lint
-lint: ## Lint go files
-	@hasdiff=$$(gofmt -l . 2>&1 | grep -v '^vendor/' || true); \
-	if [ -n "$$hasdiff" ]; then \
-		echo "$$hasdiff"; \
-		exit 1; \
-	fi; \
-	echo "no lint errors"
-
-.PHONY: platform
-platform: ## Start the dependant platform services
-		docker compose --profile platform up --detach
-
-.PHONY: start
-start: ## Start / re-start service
-	docker compose --profile service up --detach
+# set the IMAGE_NAME variable
+# It should consist of repo name, image name and version
+# use hyphens as separator
+IMAGE_NAME = gcr.io/ticker-beats/ticker-signals
+# set the IMAGE_VERSION variable
+# It should consist of the version of the image
+# use hyphens as separator
+IMAGE_VERSION = 17
+# set the IMAGE_TAG variable
+# It should consist of the IMAGE_NAME and IMAGE_VERSION
+# use colon as separator
+IMAGE_TAG = $(IMAGE_NAME):$(IMAGE_VERSION)
+# set the IMAGE_LATEST variable
+# It should consist of the IMAGE_NAME and latest
+# use colon as separator
+IMAGE_LATEST = $(IMAGE_NAME):latest
 
 
-.PHONY: stop
-stop: ## Stop service
-	docker compose stop
-
-.PHONY: test
-test: ## Run tests inside docker environment
-	go test -tags=integration test/it/it_test.go
-	go test ./...
-
-.PHONY: clean
-clean: ## Clean up containers and images. Use "cleanCache=true" to cleanup go build cache.
-	docker compose down --remove-orphans --volumes --rmi local
-	docker network prune -f
+.PHONY: generate
+generate: ## Traverses project recursively, running go generate commands
+	$(GO) generate ./...
 
 .PHONY: build
-build: ## Builds the image
-	docker build -t homedepot/backend:latest .
-
-.PHONY: start-local
-start-local: build platform start ## Start / re-start  local service
-
-
-.PHONY: start-no-build
-start-no-build: platform start ## Start / re-start  local service
+build: ## builds the project using docker build
+	docker build -t $(IMAGE_TAG) .
+	docker tag $(IMAGE_TAG) $(IMAGE_LATEST)
+	docker push $(IMAGE_TAG)
+	docker push $(IMAGE_LATEST)
