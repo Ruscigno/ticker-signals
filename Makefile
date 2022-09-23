@@ -5,7 +5,7 @@ IMAGE_NAME = gcr.io/ticker-beats/ticker-signals
 # set the IMAGE_VERSION variable
 # It should consist of the version of the image
 # use hyphens as separator
-IMAGE_VERSION = 17
+IMAGE_VERSION = 1
 # set the IMAGE_TAG variable
 # It should consist of the IMAGE_NAME and IMAGE_VERSION
 # use colon as separator
