@@ -45,10 +45,9 @@ It's also meant to do more than that, but you'll have to discover it by yourself
   
 ## Building the docker image
 
-`docker build -t r.r6o.co/ticker-signals:latest .`
+`make build`
 
-- `latest/vX.X.X` is the image version number, change it as needed.
-- Remove or change `mydocker-registry` for local images.
+change the version in the Makefile if you want to change the version of the image
 
 ## $ENV list
 
