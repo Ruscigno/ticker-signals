@@ -6,11 +6,10 @@ services:
     image: r.r6o.co/ticker-signals:latest
     container_name: ticker-signals
     ports:
-      - 31010:31010
+      - 31006:31006
     restart: unless-stopped
-    # environment:
-    #   TICKER_DATABASE_URL:
-    #   TICKER_CONFIG_LEVEL:
+    env_file:
+      - .env
     networks: 
       - ticker-beats-ntw
 
