@@ -11,10 +11,10 @@ import (
 
 const (
 	//GlobalDBVersion ...
-	GlobalDBVersion int = 1
-	// TickerServerAddress     = "TICKER_SERVER_ADDRESS"
-	TickerDatabaseURL = "TICKER_DATABASE_URL"
-	TickerConfigLevel = "TICKER_CONFIG_LEVEL"
+	GlobalDBVersion   int = 1
+	TickerDatabaseURL     = "TICKER_DATABASE_URL"
+	TickerConfigLevel     = "TICKER_CONFIG_LEVEL"
+	TickerPort            = "TICKER_PORT"
 )
 
 var DefaultFieldsToIgnore = []string{"created", "updated", "deleted"}

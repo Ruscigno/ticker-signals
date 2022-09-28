@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"runtime"
+	"time"
 
 	"github.com/blendle/zapdriver"
 	"github.com/jmoiron/sqlx"
@@ -124,6 +125,9 @@ func InitDatabase(dbURL string) (*sqlx.DB, error) {
 		zap.L().Fatal("Error trying to connect to the database", zap.Error(err),
 			zapdriver.SourceLocation(runtime.Caller(0)))
 	}
+	db.SetMaxOpenConns(25)
+	db.SetMaxIdleConns(5)
+	db.SetConnMaxLifetime(time.Minute)
 	return db, err
 }
 

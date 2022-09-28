@@ -29,8 +29,9 @@ import (
 
 var (
 	defaults map[string]interface{} = map[string]interface{}{
-		"dbURL":       os.Getenv(utils.TickerDatabaseURL),
-		"configLevel": os.Getenv(utils.TickerConfigLevel),
+		utils.TickerDatabaseURL: os.Getenv(utils.TickerDatabaseURL),
+		utils.TickerConfigLevel: os.Getenv(utils.TickerConfigLevel),
+		utils.TickerPort:        os.Getenv(utils.TickerPort),
 	}
 )
 
@@ -84,9 +85,9 @@ func main() {
 
 	setupViper()
 	cfg := &config{
-		serverPort:  "31006",
-		dbURL:       strings.ReplaceAll(viper.GetString("dbURL"), ";", " "),
-		configLevel: viper.GetString("configLevel"),
+		serverPort:  viper.GetString(utils.TickerPort),
+		dbURL:       strings.ReplaceAll(viper.GetString(utils.TickerDatabaseURL), ";", " "),
+		configLevel: strings.ToUpper(viper.GetString(utils.TickerConfigLevel)),
 	}
 	if cfg.configLevel == "TEST" || cfg.configLevel == "" {
 		zap.L().Fatal("prod environment", zap.Error(err), zapdriver.SourceLocation(runtime.Caller(0)))
